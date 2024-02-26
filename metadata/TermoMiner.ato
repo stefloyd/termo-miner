@@ -1,0 +1,100 @@
+// Definizione del sensore di temperatura DS18B20
+component DS18B20_Sensor:
+    # Sensore di temperatura DS18B20
+    signal GND ~ pin ONE_WIRE_BUS_GND
+    signal DQ ~ pin ONE_WIRE_BUS_DATA
+    signal VCC ~ pin ONE_WIRE_BUS_VCC
+
+// Definizione del display OLED SSD1306
+component SSD1306_Display:
+    # Display OLED SSD1306
+    signal GND ~ pin DISPLAY_GND
+    signal SDA ~ pin DISPLAY_SDA
+    signal SCL ~ pin DISPLAY_SCL
+    signal VCC ~ pin DISPLAY_VCC
+
+// Definizione del relè
+component Relay:
+    # Relè
+    signal IN ~ pin RELAY_PIN
+    signal VCC ~ pin RELAY_VCC
+    signal GND ~ pin RELAY_GND
+
+// Definizione dei pulsanti
+component Button:
+    # Pulsanti
+    signal INPUT ~ pin BUTTON_PIN
+    signal VCC ~ pin BUTTON_VCC
+    signal GND ~ pin BUTTON_GND
+    resistor R_pullup = new Resistor
+    R_pullup.footprint = "R0402"
+    R_pullup.value = "10kohm"
+    INPUT ~ R_pullup.p1
+    VCC ~ R_pullup.p2
+
+// Definizione del modulo ESP8266 NodeMCU 1.0 (ESP-12E)
+component ESP8266_NodeMCU:
+    # Modulo ESP8266 NodeMCU 1.0 (ESP-12E)
+    signal RXD ~ pin RXD0
+    signal TXD ~ pin TXD0
+    signal EN ~ pin EN
+    signal D0 ~ pin IO16
+    signal D1 ~ pin IO5
+    signal D2 ~ pin IO4
+    signal D3 ~ pin IO0
+    signal D4 ~ pin IO2
+    signal D5 ~ pin IO14
+    signal D6 ~ pin IO12
+    signal D7 ~ pin IO13
+    signal D8 ~ pin IO15
+    signal GND ~ pin GND
+    signal _3V3 ~ pin _3V3
+
+// Definizione del circuito principale
+module Termo_Miner_Circuit:
+    // Istanza dei componenti
+    temperature_sensor = new DS18B20_Sensor
+    oled_display = new SSD1306_Display
+    main_relay = new Relay
+    remote_mode_button = new Button
+    relay_button = new Button
+    fan_relay = new Relay
+    esp8266_module = new ESP8266_NodeMCU
+
+    // Collegamenti tra i componenti
+    temperature_sensor.GND ~ main_relay.GND
+    temperature_sensor.VCC ~ main_relay.VCC
+    temperature_sensor.DQ ~ main_relay.IN
+
+    oled_display.GND ~ main_relay.GND
+    oled_display.VCC ~ main_relay.VCC
+    oled_display.SDA ~ main_relay.IN
+    oled_display.SCL ~ main_relay.IN
+
+    main_relay.GND ~ GND
+    main_relay.VCC ~ VCC
+
+    remote_mode_button.GND ~ GND
+    remote_mode_button.VCC ~ VCC
+
+    relay_button.GND ~ GND
+    relay_button.VCC ~ VCC
+
+    fan_relay.GND ~ GND
+    fan_relay.VCC ~ VCC
+    fan_relay.IN ~ main_relay.IN
+
+    esp8266_module.RXD ~ RXD
+    esp8266_module.TXD ~ TXD
+    esp8266_module.EN ~ EN
+    esp8266_module.D0 ~ D0
+    esp8266_module.D1 ~ D1
+    esp8266_module.D2 ~ D2
+    esp8266_module.D3 ~ D3
+    esp8266_module.D4 ~ D4
+    esp8266_module.D5 ~ D5
+    esp8266_module.D6 ~ D6
+    esp8266_module.D7 ~ D7
+    esp8266_module.D8 ~ D8
+    esp8266_module.GND ~ GND
+    esp8266_module._3V3 ~ _3V3
