@@ -1,4 +1,4 @@
-# atopile project template
+# TermoMiner
 Project Description: Smart Temperature Control System
 
 The Smart Temperature Control System is a project aimed at providing an efficient and automated solution for controlling temperature-related processes, such as environmental temperature regulation or equipment cooling. The system utilizes an ESP8266 NodeMCU microcontroller along with various sensors and actuators to monitor and adjust temperature levels according to predefined thresholds and user preferences.
